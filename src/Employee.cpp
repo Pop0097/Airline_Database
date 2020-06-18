@@ -5,7 +5,7 @@
 #import "Classes.h"
 
 Employee::Employee() {
-    username = "Default Username";
+    username = "d_uname";
     encrypted_password = passwordEncrypt("pass", "A5HDUQ71JRBC0SK2HRU");
     name = "Default Name";
 }
@@ -26,4 +26,12 @@ string Employee::passwordEncrypt(string pass, string key) { //method encrypts th
 
 string Employee::passwordDecrypt(string entry, string key){ //method decrpyts the password
     return passwordEncrypt(entry, key);
+}
+
+string Employee::getUsername() {
+    return username;
+}
+
+string Employee::getEncryptedPassword() {
+    return encrypted_password;
 }

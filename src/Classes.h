@@ -93,9 +93,34 @@ public:
     Employee();
     string passwordEncrypt(string, string);
     string passwordDecrypt(string, string);
+    // Getters and Setters
+    string getUsername();
+    string getEncryptedPassword();
 
     /* Add methods here */
 
+};
+
+#endif
+
+#ifndef AIRLINE_H
+#define AIRLINE_H
+
+class Airline {
+private:
+    Employee ** employees;
+    Flight ** flights;
+    int employeeNumber;
+    int flightNumber;
+    string airlineName;
+public:
+    // Constructors and Destructors
+    Airline();
+    // Login operations
+    int employeeLogin(string, string);
+    // Getters and Setters
+    string getAirlineName();
+    void setAirlineName(string);
 };
 
 #endif
