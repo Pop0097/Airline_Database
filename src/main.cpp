@@ -136,9 +136,9 @@ void employeeSession(Airline& air, int userNumber) {
         } else if(choice == 10) { //edit account information
             air.editEmployeeAccount(userNumber);
         } else if(choice == 11) { //create employee account
-
+            air.createEmployeeAccount();
         } else if(choice == 12) { //delete employee acccount
-
+            userNumber = air.deleteEmployeeAccount(userNumber);
         } else { //logout
             done = true;
         }

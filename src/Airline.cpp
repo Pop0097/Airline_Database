@@ -96,3 +96,106 @@ void Airline::editEmployeeAccount(int userNumber) {
         cout << endl;
     }
 }
+
+void Airline::createEmployeeAccount() {
+    //Gets inputs
+    string name = "", employeeID = "", uname = "", pass = "";
+    cin.ignore();
+    cout << "Fill in the fields. (If you don't want to set a field, enter \"0\". To cancel the process, enter \"0\" into all fields)" << endl;
+    cout << "Name: ";
+    getline(cin, name);
+    cout << "Employee ID: " ;
+    getline(cin, employeeID);
+    Employee * newEmployee = new Employee(name, employeeID); //creates new employee object
+    cout << "The employee's temporary username is " << name << " and their temporary password is \"pass\"" << endl;
+
+    //Re-defines and re-initializes employees array
+    employeeNumber++;
+    Employee ** tempArray = employees;
+    employees = new Employee * [employeeNumber];
+    for(int i = 0; i < employeeNumber; i++) {
+        if(i < employeeNumber-1) {
+            employees[i] = tempArray[i];
+        } else {
+            employees[i] = newEmployee;
+        }
+    }
+    cout << endl;
+    cout << "Employee account information:" << endl; //displays new employee account
+    employees[employeeNumber-1]->toString();
+    cout << endl;
+}
+
+bool Airline::findEmployees(int userNumber) {
+    bool done = false, canceled = false;
+    cin.ignore();
+    string name = "", empName = "";
+    int found = 0;
+
+    while(!done) { //Employee search loop starts
+        //gets input
+        cout << "Search for an employee (Enter employee name. Type \"0\" to cancel): ";
+        getline(cin, name);
+
+        if(name == "0"){ //if user cancels search
+            done = true;
+            canceled = true;
+            cout << endl;
+            cout << "Process canceled." << endl;
+            cout << endl;
+        } else {
+            for(int i = 0; i < employeeNumber; i++) { //searches all employees to find those that match the search
+                empName = employees[i]->getName();
+                found = empName.find(name);
+                if(i != userNumber && found != -1) { //if employees match the search (and are not the current user)
+                    done = true;
+                    cout << "(Type \"" << (i+1) << "\") | " << employees[i]->getName() << " (ID: " << employees[i]->getEmployeeId() << ")" << endl;
+                }
+            }
+
+            if(!done) {
+                cout << endl;
+                cout << "None of the employees matched your search." << endl;
+                cout << endl;
+            }
+        }
+    } //Employee search loop ends
+    return canceled;
+}
+
+int Airline::deleteEmployeeAccount(int userNumber) {
+    bool search = findEmployees(userNumber); //calls function to search for employees
+
+    if(!search) { //if user did not cancel the search
+        int decision = 0;
+        cout << "Choose a user to delete (Type \"0\" to cancel): ";
+        cin >> decision;
+
+        if(decision != 0) { //user does not cancel process
+            decision--;
+            if(decision < userNumber) {
+                userNumber--;
+            }
+
+            //Re-defines and re-initializes employees array
+            employeeNumber--;
+            Employee ** tempArray = employees;
+            employees = new Employee * [employeeNumber];
+            for(int i = 0; i < employeeNumber; i++){
+                if(i < decision) {
+                    employees[i] = tempArray[i];
+                } else {
+                    employees[i] = tempArray[i+1];
+                }
+            }
+            cout << endl;
+            cout << "Employee deleted." << endl;
+            cout << endl;
+        } else {
+            cout << endl;
+            cout << "Process canceled." << endl;
+            cout << endl;
+        }
+    }
+    return userNumber;
+}

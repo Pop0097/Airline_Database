@@ -16,6 +16,6 @@ I made this database to further solidify my skills in object oriented programmin
 2. Open the .cpp and .h files in an IDE that can compile C++ and run the code.
 3. Navigate the database in the IDE and enjoy! :))
 
-***Note:** Default login credentials for employee accounts:
+**Note:** Default login credentials for employee accounts:
 - **Username:** d_uname
 - **Password:** pass

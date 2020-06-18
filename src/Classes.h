@@ -92,9 +92,12 @@ private:
 public:
     // Constructors and Destructors
     Employee();
+    Employee(string, string);
     string passwordEncrypt(string, string);
     ~Employee();
     // Getters and Setters
+    string getName();
+    string getEmployeeId();
     string getUsername();
     string getEncryptedPassword();
     void setName(string);
@@ -129,6 +132,9 @@ public:
     //Methods for Employee account
     void viewEmployeeAccount(int);
     void editEmployeeAccount(int);
+    void createEmployeeAccount();
+    bool findEmployees(int);
+    int deleteEmployeeAccount(int);
 };
 
 #endif

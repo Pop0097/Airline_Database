@@ -11,6 +11,17 @@ Employee::Employee() {
     employeeID = "Dafault ID";
 }
 
+Employee::Employee(string n, string id) {
+    name = n;
+    username = n;
+    encrypted_password = passwordEncrypt("pass", "A5HDUQ71JRBC0SK2HRU");
+    if(idValid(id)) { //checks if employee ID is valid before setting it
+        employeeID = id;
+    } else {
+        cout << "Employee ID is not valid" << endl;
+    }
+}
+
 string Employee::passwordEncrypt(string pass, string key) { //method encrypts the password
     //ensures the key is (at a minimum) as long as the message
     string tmp(key);
@@ -27,6 +38,14 @@ string Employee::passwordEncrypt(string pass, string key) { //method encrypts th
 
 Employee::~Employee() {}
 
+string Employee::getName() {
+    return name;
+}
+
+string Employee::getEmployeeId() {
+    return employeeID;
+};
+
 string Employee::getUsername() {
     return username;
 }
@@ -40,7 +59,7 @@ void Employee::setName(string n) {
 }
 
 void Employee::setEmployeeId(string id) {
-    if(this->idValid(id)) { //checks if employee ID is valid before setting it
+    if(idValid(id)) { //checks if employee ID is valid before setting it
         employeeID = id;
     } else {
         cout << "Employee ID is not valid" << endl;
@@ -64,7 +83,7 @@ bool Employee::idValid(string id) {
            int ASCII = (int) id.at(i);
            if(i == 0 && id.at(0) != 'E') { //first character is an "E"
                valid = false;
-           } else if (i != 0 && (48 >= ASCII || 57 <= ASCII)) { //next nine characters are digits
+           } else if (i != 0 && (48 > ASCII || 57 < ASCII)) { //next nine characters are digits
                 valid = false;
            }
            i++;
