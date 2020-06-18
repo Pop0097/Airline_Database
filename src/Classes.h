@@ -88,17 +88,22 @@ private:
     string username;
     string encrypted_password;
     string name;
+    string employeeID; //valid employee ID is an "E" followed by 9 digits
 public:
     // Constructors and Destructors
     Employee();
     string passwordEncrypt(string, string);
-    string passwordDecrypt(string, string);
+    ~Employee();
     // Getters and Setters
     string getUsername();
     string getEncryptedPassword();
-
-    /* Add methods here */
-
+    void setName(string);
+    void setEmployeeId(string);
+    void setUsername(string);
+    void setPassword(string);
+    bool idValid(string);
+    //Display
+    string toString();
 };
 
 #endif
@@ -121,6 +126,9 @@ public:
     // Getters and Setters
     string getAirlineName();
     void setAirlineName(string);
+    //Methods for Employee account
+    void viewEmployeeAccount(int);
+    void editEmployeeAccount(int);
 };
 
 #endif
