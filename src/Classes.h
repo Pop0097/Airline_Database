@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string.h>
 #include <array>
+#include <math.h>
 
 using namespace std;
 
@@ -60,21 +61,44 @@ public:
 class Flight {
 private:
     int flightNumber;
+    string departureLocation;
+    string arrivalLocation;
     string departureDate;
     string arrivalDate;
     string departureTime;
     string arrivalTime;
-    string departureLocation;
-    string arrivalLocation;
+    string airplaneType;
     int durationMinutes; //duration of the flight in minutes
     int totalSeats;
     Seat ** seats; //array contains all seats on the flight
+    int seatsSold;
+    int rows; //number of set rows in the plane
+    int columns; //number of seats per row
 public:
     // Constructors and Destructors
     Flight();
-
-    /* Add methods here */
-
+    Flight(int, int, int, string, string, string, string, string, string, string);
+    ~Flight();
+    // Getters and Setters
+    int getFlightNumber();
+    string getDepartureLocation();
+    string getDepartureDate();
+    string getDepartureTime();
+    int getSeatsSold();
+    void setFlightNumber(int);
+    void setFlightDuration(int);
+    void setTotalSeats(int);
+    void adjustPassengerSeats();
+    void setAirplaneType(string);
+    void setDepartureLocation(string);
+    void setDepartureDate(string);
+    void setDepartureTime(string);
+    void setArrivalLocation(string);
+    void setArrivalDate(string);
+    void setArrivalTime(string);
+    // Display
+    string displayPassengerList();
+    string toString();
 };
 
 #endif
@@ -135,6 +159,12 @@ public:
     void createEmployeeAccount();
     bool findEmployees(int);
     int deleteEmployeeAccount(int);
+    //Methods for Flight
+    void createFlight();
+    bool findFlights();
+    void viewFlight();
+    void editFlight();
+    void deleteFlight();
 };
 
 #endif

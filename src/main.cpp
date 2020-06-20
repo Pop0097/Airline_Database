@@ -124,13 +124,13 @@ void employeeSession(Airline& air, int userNumber) {
         } else if(choice == 4) { //view ticket
 
         } else if(choice == 5) { //schedule flight
-
+            air.createFlight();
         } else if(choice == 6) { //cancel flight
-
+            air.deleteFlight();
         } else if(choice == 7) { //edit flight
-
+            air.editFlight();
         } else if(choice == 8) {//view flight
-
+            air.viewFlight();
         } else if(choice == 9) { //view account information
             air.viewEmployeeAccount(userNumber);
         } else if(choice == 10) { //edit account information
