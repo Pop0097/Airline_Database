@@ -205,8 +205,17 @@ void Airline::createFlight() {
     //gets inputs
     int flightNum = 0, durationMinutes = 0, totalSeats = 0;
     string airplaneType = "", departureDate = "", departureTime = "", arrivalTime = "", departureLocation = "", arrivalLocation = "", arrivalDate= "";
-    cout << "Flight Number: ";
-    cin >> flightNum;
+    //ensures flight number input is valid
+    bool valid = false;
+    while(!valid) {
+        cout << "Flight Number (Number between 10000 and 99999 inclusive): ";
+        cin >> flightNum;
+        if(flightNum >= 10000 && flightNum <= 99999) {
+            valid = true;
+        } else {
+            cout << "Invalid input." << endl;
+        }
+    }
     cout << "Airplane model: ";
     cin.ignore();
     getline(cin, airplaneType);
@@ -328,10 +337,19 @@ void Airline::editFlight() {
             decision--;
             cout << "Fill in all of the fields (Type \"0\" in a field to not change it. Type \"0\" into all fields to cancel):" << endl;
             //gets inputs
-            int flightNumber = 0, durationMinutes = 0, totalSeats = 0;
+            int flightNum = 0, durationMinutes = 0, totalSeats = 0;
             string airplaneType = "", departureDate = "", departureTime = "", arrivalTime = "", departureLocation = "", arrivalLocation = "", arrivalDate= "";
-            cout << "Flight Number: ";
-            cin >> flightNumber;
+            //ensures flight number input is valid
+            bool valid = false;
+            while(!valid) {
+                cout << "Flight Number (Number between 10000 and 99999 inclusive): ";
+                cin >> flightNum;
+                if(flightNum >= 10000 && flightNum <= 99999) {
+                    valid = true;
+                } else {
+                    cout << "Invalid input." << endl;
+                }
+            }
             cout << "Airplane model: ";
             cin.ignore();
             getline(cin, airplaneType);
@@ -354,8 +372,8 @@ void Airline::editFlight() {
             cin >> durationMinutes;
 
             //Sets new values after checking if the inputted value is not "0"
-            if(flightNumber != 0) {
-                flights[decision]->setFlightNumber(flightNumber);
+            if(flightNum != 0) {
+                flights[decision]->setFlightNumber(flightNum);
             }
             if(durationMinutes != 0) {
                 flights[decision]->setFlightDuration(durationMinutes);
@@ -436,6 +454,139 @@ void Airline::deleteFlight() {
         cout << endl;
         cout << "Process canceled." << endl;
         cout << endl;
+    }
+}
+
+bool Airline::searchFlightByDateAndCity() {
+    string date = "", depCity = "", arrCity = "", choice = "";
+    int found = 0, found1 = 0, found2 = 0;
+    bool done = false, redoDepCity = true, redoArrCity = true, cancel = false;
+    cin.ignore();
+    while(!done) {
+        cout << "Fill in the fields (Enter \"0\" into the first field to cancel):" << endl;
+        cout << "Preferred departure date (DD/MM/YYYY): ";
+        getline(cin, date);
+        if(redoDepCity == true) {
+            cout << "Departure city (City name or airport code): ";
+            getline(cin, depCity);
+            redoDepCity = false;
+        }
+        if(redoArrCity == true) {
+            cout << "Arrival city (City name or airport code): ";
+            getline(cin, arrCity);
+            redoArrCity = false;
+        }
+
+        if(date == "0") {
+            done = true;
+            cancel = true;
+            cout << endl;
+            cout << "Process canceled." << endl;
+            cout << endl;
+        } else {
+            for(int i = 0; i < flightNumber; i++) { //searches all flights to find those that match the search
+                found = flights[i]->getDepartureDate().find(date);
+                found1 = flights[i]->getDepartureLocation().find(depCity);
+                found2 = flights[i]->getArrivalLocation().find(arrCity);
+                if(found != -1 && found1 != -1 && found2 != -1) { //if flight match the inputs, it is displayed
+                    done = true;
+                    cout << "(Type \"" << (i+1) << "\") | Flight " << flights[i]->getFlightNumber() << ". " <<  "Departure information: " << flights[i]->getDepartureLocation() << "; " << flights[i]->getDepartureDate() << " at " << flights[i]->getDepartureTime() << endl;
+                }
+            }
+
+            if(!done) {
+                cout << endl;
+                cout << "None of the flights matched your search. Choose a different date." << endl;
+                //sees if customer wants to change the cities
+                cout << "Would you like to select a different departure city? (Type \"y\" or \"n\"): ";
+                getline(cin, choice);
+                if(choice == "y") {
+                    redoDepCity = true;
+                }
+                cout << "Would you like to select a different arrival city? (Type \"y\" or \"n\"): ";
+                getline(cin, choice);
+                if(choice == "y") {
+                    redoArrCity = true;
+                }
+                cout << endl;
+            }
+        }
+
+    }
+    return cancel;
+}
+
+void Airline::bookTicket() {
+    bool search = this->searchFlightByDateAndCity(); //searches for flight user wants to book
+    int decision = 0;
+    if(!search) {//if user did not cancel
+        cout << "Choose a flight (Type \"0\" to cancel): ";
+        cin >> decision;
+        if(decision != 0) {
+            decision--;
+            cin.ignore();
+            //gets inputs
+            cout << "Fill in all of the fields (Type \"0\" into at least one of the fields to cancel):" << endl;
+            string name = "", birth = "", email = "", phone = "", address = "";
+            int seat = 0, flight = 0;
+            cout << "Name: ";
+            getline(cin, name);
+            cout << "Email: ";
+            getline(cin, email);
+            cout << "Phone Number: ";
+            getline(cin, phone);
+            cout << "Date of birth (DD/MM/YYYY): ";
+            getline(cin, birth);
+            cout << "Address: ";
+            getline(cin, address);
+            flight = flights[decision]->getFlightNumber();
+            flights[decision]->displaySeatingChart();
+            cout << "Type in a number to select the seat: ";
+            cin >> seat;
+            seat--;
+            //confirms once again
+            cout << "Are you sure you want to proceed with checkout? (Type \"y\" or \"n\"): ";
+            string confirmation = "";
+            cin.ignore();
+            getline(cin, confirmation);
+            if(confirmation == "y") {
+                cout << "The ticket confirmation number is: ";
+                flights[decision]->setTicketReservation(name, birth, email, phone, address, seat);
+                cout << "The flight number is: " << flight << endl;
+                cout << "You need this information to view, edit, or delete your ticket. Without them, none of the actions are possible." << endl;
+                cout << endl;
+                cout << "Booking process complete. " << endl;
+                cout << endl;
+            } else {
+                cout << endl;
+                cout << "Process canceled." << endl;
+                cout << endl;
+            }
+        } else {
+            cout << endl;
+            cout << "Process canceled." << endl;
+            cout << endl;
+        }
+    }
+}
+
+void Airline::viewTicket() {
+    bool search = this->findFlights();
+
+    if(!search) {
+        int decision = 0;
+        cout << "Choose a flight to view (Type \"0\" to cancel): ";
+        cin >> decision;
+        if(decision > 0) { //if user does not cancel, then flight is edited
+            int confirmationNum = 0;
+            cout << "Enter ticket confirmation number: ";
+            cin >> confirmationNum;
+            flights[decision]->displayTicket(confirmationNum);
+        } else {
+            cout << endl;
+            cout << "Process canceled." << endl;
+            cout << endl;
+        }
     }
 }
 

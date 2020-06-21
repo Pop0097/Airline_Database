@@ -118,13 +118,13 @@ void employeeSession(Airline& air, int userNumber) {
         cout << endl;
 
         if(choice == 1) { //book ticket
-
+            air.bookTicket();
         } else if(choice == 2) { //cancel ticket
 
         } else if(choice == 3) { //edit ticket information
 
         } else if(choice == 4) { //view ticket
-
+            air.viewTicket();
         } else if(choice == 5) { //schedule flight
             air.createFlight();
         } else if(choice == 6) { //cancel flight

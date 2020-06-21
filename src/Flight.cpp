@@ -18,7 +18,7 @@ Flight::Flight() {
     seatsSold = 0;
     seats = new Seat*[totalSeats];
     for(int i = 0; i < 10; i++) {
-        seats[i] = new Seat();
+        seats[i] = new Seat(flightId, i);
     }
     rows = 4;
     columns = 3;
@@ -77,6 +77,18 @@ string Flight::getDepartureDate() {
 
 string Flight::getDepartureTime() {
     return departureTime;
+}
+
+string Flight::getArrivalLocation() {
+    return arrivalLocation;
+}
+
+string Flight::getArrivalDate() {
+    return arrivalDate;
+}
+
+string Flight::getArrivalTime() {
+    return arrivalTime;
 }
 
 int Flight::getSeatsSold() {
@@ -150,6 +162,10 @@ void Flight::setArrivalTime(string time) {
     arrivalTime = time;
 }
 
+void Flight::setTicketReservation(string n, string b, string e, string p, string a, int s){
+    seats[s]->setBooking(n, b, e, p, a, this->getFlightNumber());
+}
+
 string Flight::displayPassengerList() {
     cout << "All passengers on flight " << flightId << ":" << endl;
     int counter = 0;
@@ -168,6 +184,33 @@ string Flight::displayPassengerList() {
         cout << endl;
     }
     return "";
+}
+
+void Flight::displaySeatingChart() {
+    int counter = 1;
+    cout << "\"X\" means the seat is taken" << endl;
+    cout << "Front of the plane" << endl;
+    for(int i = 0; i < totalSeats; i++) {
+        if(seats[i]->getReservationStatus()) {
+            cout << "X ";
+        } else {
+            cout << counter << " ";
+        }
+        if((i+1)%columns == 0) {
+            cout << endl;
+        }
+        counter++;
+    }
+    cout << endl;
+}
+
+void Flight::displayTicket(int confirmation) {
+    for(int i = 0; i < totalSeats; i++) {
+        if(confirmation == seats[i]->getConfirmationNum()) {
+            cout << "Found!" << endl;
+            seats[i]->toString();
+        }
+    }
 }
 
 string Flight::toString() {

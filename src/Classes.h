@@ -27,8 +27,11 @@ private:
 public:
     // Constructors and Destructors
     Customer();
-
-    /* Add methods here */
+    Customer(string, string, string, string, string, int, int, int);
+    // Getters and Setters
+    string getName();
+    // Display
+    string toString();
 
 };
 
@@ -40,16 +43,21 @@ public:
 
 class Seat {
 private:
-    int flightNumber;
+    int flight;
     int seatNumber;
     Customer * person; //occupying customer is seated here
+    int confirmationNum;
     bool reserved; //used to see if the seat is actually reserved
 public:
     // Constructors and Destructors
     Seat();
-
-    /* Add methods here */
-
+    Seat(int, int);
+    // Getters and Setters
+    bool getReservationStatus();
+    int getConfirmationNum();
+    void setBooking(string, string, string, string, string, int);
+    // Display
+    string toString();
 };
 
 #endif
@@ -84,6 +92,9 @@ public:
     string getDepartureLocation();
     string getDepartureDate();
     string getDepartureTime();
+    string getArrivalLocation();
+    string getArrivalDate();
+    string getArrivalTime();
     int getSeatsSold();
     void setFlightNumber(int);
     void setFlightDuration(int);
@@ -96,8 +107,11 @@ public:
     void setArrivalLocation(string);
     void setArrivalDate(string);
     void setArrivalTime(string);
+    void setTicketReservation(string, string, string, string, string, int);
     // Display
     string displayPassengerList();
+    void displaySeatingChart();
+    void displayTicket(int);
     string toString();
 };
 
@@ -165,6 +179,10 @@ public:
     void viewFlight();
     void editFlight();
     void deleteFlight();
+    // Methods for Seat
+    bool searchFlightByDateAndCity();
+    void bookTicket();
+    void viewTicket();
     // Display
     string toString();
 };
