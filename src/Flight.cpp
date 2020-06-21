@@ -5,7 +5,7 @@
 #import "Classes.h"
 
 Flight::Flight() {
-    flightNumber = 0;
+    flightId = 1;
     departureDate = "Default Departure Date";
     arrivalDate = "Default Arrival Date";
     departureTime = "Default Departure Time";
@@ -25,7 +25,7 @@ Flight::Flight() {
 }
 
 Flight::Flight(int num, int duration, int seatsNum, string depDate, string depTime, string depLoc, string arrDate, string arrTime, string arrLocation, string planeType) {
-    flightNumber = num;
+    flightId = num;
     durationMinutes = duration;
     if(seatsNum > 700){ //maximum plane size for this airline will be set to 700
         totalSeats = 700;
@@ -64,7 +64,7 @@ Flight::Flight(int num, int duration, int seatsNum, string depDate, string depTi
 Flight::~Flight(){}
 
 int Flight::getFlightNumber() {
-    return flightNumber;
+    return flightId;
 }
 
 string Flight::getDepartureLocation() {
@@ -84,7 +84,7 @@ int Flight::getSeatsSold() {
 }
 
 void Flight::setFlightNumber(int num) {
-    flightNumber = num;
+    flightId = num;
 }
 
 void Flight::setFlightDuration(int dur) {
@@ -151,7 +151,7 @@ void Flight::setArrivalTime(string time) {
 }
 
 string Flight::displayPassengerList() {
-    cout << "All passengers on flight " << flightNumber << ":" << endl;
+    cout << "All passengers on flight " << flightId << ":" << endl;
     int counter = 0;
     for(int i = 0; i < totalSeats; i++ && counter <= seatsSold) {
 
@@ -171,7 +171,7 @@ string Flight::displayPassengerList() {
 }
 
 string Flight::toString() {
-    cout << "Flight " << flightNumber << ":" << endl;
+    cout << "Flight " << flightId << ":" << endl;
     cout << "Airplane model: " << airplaneType << endl;
     cout << "Total seats: " << totalSeats << endl;
     cout << "Departure information: " << departureLocation << "; " << departureDate << " at " << departureTime << endl;

@@ -60,7 +60,7 @@ public:
 
 class Flight {
 private:
-    int flightNumber;
+    int flightId;
     string departureLocation;
     string arrivalLocation;
     string departureDate;
@@ -129,7 +129,7 @@ public:
     void setUsername(string);
     void setPassword(string);
     bool idValid(string);
-    //Display
+    // Display
     string toString();
 };
 
@@ -153,18 +153,20 @@ public:
     // Getters and Setters
     string getAirlineName();
     void setAirlineName(string);
-    //Methods for Employee account
+    // Methods for Employee account
     void viewEmployeeAccount(int);
     void editEmployeeAccount(int);
     void createEmployeeAccount();
     bool findEmployees(int);
     int deleteEmployeeAccount(int);
-    //Methods for Flight
+    // Methods for Flight
     void createFlight();
     bool findFlights();
     void viewFlight();
     void editFlight();
     void deleteFlight();
+    // Display
+    string toString();
 };
 
 #endif

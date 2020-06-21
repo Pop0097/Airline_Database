@@ -109,6 +109,8 @@ void employeeSession(Airline& air, int userNumber) {
         cout << "Employee Actions:" << endl;
         cout << "11. Create an employee account (Type \"11\")" << endl;
         cout << "12. Delete an employee account (Type \"12\")" << endl;
+        cout << "Extras:" << endl;
+        cout << "13. View all scheduled flights (Type \"13\")" << endl;
         cout << endl;
         cout << "Logout (Type \"100\")" << endl;
         cin >> choice;
@@ -139,6 +141,8 @@ void employeeSession(Airline& air, int userNumber) {
             air.createEmployeeAccount();
         } else if(choice == 12) { //delete employee acccount
             userNumber = air.deleteEmployeeAccount(userNumber);
+        } else if(choice == 13) {
+            air.toString();
         } else { //logout
             done = true;
         }

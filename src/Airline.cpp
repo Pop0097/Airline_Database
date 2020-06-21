@@ -203,16 +203,17 @@ int Airline::deleteEmployeeAccount(int userNumber) {
 void Airline::createFlight() {
     cout << "Fill in all of the fields (Type \"0\" into at least one of the fields to cancel):" << endl;
     //gets inputs
-    int flightNumber = 0, durationMinutes = 0, totalSeats = 0;
+    int flightNum = 0, durationMinutes = 0, totalSeats = 0;
     string airplaneType = "", departureDate = "", departureTime = "", arrivalTime = "", departureLocation = "", arrivalLocation = "", arrivalDate= "";
-    cin.ignore();
     cout << "Flight Number: ";
-    cin >> flightNumber;
+    cin >> flightNum;
     cout << "Airplane model: ";
+    cin.ignore();
     getline(cin, airplaneType);
     cout << "Total seats: ";
     cin >> totalSeats;
     cout << "Departure location (Format: \"City name, Country (airport code)\"): ";
+    cin.ignore();
     getline(cin, departureLocation);
     cout << "Departure date (Format: DD/MM/YYYY): ";
     getline(cin, departureDate);
@@ -228,14 +229,14 @@ void Airline::createFlight() {
     cin >> durationMinutes;
 
     //checks if any of the fields are "0" because that means the employee wants to cancel the process
-    if(flightNumber == 0 || totalSeats == 0 || durationMinutes == 0 || airplaneType == "0" || departureLocation == "0" || departureDate == "0" || departureTime == "0" || arrivalLocation == "0" || arrivalDate == "0" || arrivalTime == "0") {
+    if(flightNum == 0 || totalSeats == 0 || durationMinutes == 0 || airplaneType == "0" || departureLocation == "0" || departureDate == "0" || departureTime == "0" || arrivalLocation == "0" || arrivalDate == "0" || arrivalTime == "0") {
         cout << endl;
         cout << "Process canceled." << endl;
         cout << endl;
     } else {
         flightNumber++;
         //creates new flight with provided inputs
-        Flight * newFlight = new Flight(flightNumber, durationMinutes, totalSeats, departureDate, departureTime, departureLocation, arrivalDate, arrivalTime, arrivalLocation, airplaneType);
+        Flight * newFlight = new Flight(flightNum, durationMinutes, totalSeats, departureDate, departureTime, departureLocation, arrivalDate, arrivalTime, arrivalLocation, airplaneType);
         //Re-defines and re-initializes flights array
         Flight ** tempArray = flights;
         flights = new Flight*[flightNumber];
@@ -243,6 +244,7 @@ void Airline::createFlight() {
             if(i < flightNumber - 1) {
                 flights[i] = tempArray[i];
             } else {
+                cout << "Adding to array" << endl;
                 flights[i] = newFlight; //adds new flight to array
             }
         }
@@ -255,15 +257,15 @@ void Airline::createFlight() {
 bool Airline::findFlights() { //method used to search for flights to improve UI
     bool done = false, canceled = false;
     cin.ignore();
-    int flightNum = 0, num = 0;
+    string flightNum = "", num = "";
     int found = 0;
 
     while(!done) { //Flight search loop starts
         //gets input
         cout << "Search for a flight (Enter flight number. Type \"0\" to cancel): ";
-        cin >> flightNum;
+        getline(cin, flightNum);
 
-        if(flightNum == 0){ //if user cancels search
+        if(flightNum == "0"){ //if user cancels search
             done = true;
             canceled = true;
             cout << endl;
@@ -271,10 +273,11 @@ bool Airline::findFlights() { //method used to search for flights to improve UI
             cout << endl;
         } else {
             for(int i = 0; i < flightNumber; i++) { //searches all flights to find those that match the search
-                num = flights[i]->getFlightNumber();
-                if(flightNum == num) { //if flight match the input, it is displayed
+                num = to_string(flights[i]->getFlightNumber());
+                found = num.find(flightNum);
+                if(found != -1) { //if flight match the input, it is displayed
                     done = true;
-                    cout << "(Type \"" << (i+1) << "\") | " << num << ". " <<  "Departure information: " << flights[i]->getDepartureLocation() << "; " << flights[i]->getDepartureDate() << " at " << flights[i]->getDepartureTime() << endl;
+                    cout << "(Type \"" << (i+1) << "\") | Flight " << num << ". " <<  "Departure information: " << flights[i]->getDepartureLocation() << "; " << flights[i]->getDepartureDate() << " at " << flights[i]->getDepartureTime() << endl;
                 }
             }
 
@@ -327,14 +330,15 @@ void Airline::editFlight() {
             //gets inputs
             int flightNumber = 0, durationMinutes = 0, totalSeats = 0;
             string airplaneType = "", departureDate = "", departureTime = "", arrivalTime = "", departureLocation = "", arrivalLocation = "", arrivalDate= "";
-            cin.ignore();
             cout << "Flight Number: ";
             cin >> flightNumber;
             cout << "Airplane model: ";
+            cin.ignore();
             getline(cin, airplaneType);
             cout << "Total seats: ";
             cin >> totalSeats;
             cout << "Departure location (Format: \"City name, Country (airport code)\"): ";
+            cin.ignore();
             getline(cin, departureLocation);
             cout << "Departure date (Format: DD/MM/YYYY): ";
             getline(cin, departureDate);
@@ -399,30 +403,49 @@ void Airline::editFlight() {
 
 void Airline::deleteFlight() {
     bool search = findFlights(); //user searches for a flight to delete
+    int decision = -1;
+    string confirmation = "";
 
     if(!search) { //if user did not cancel the process
-        int decision = 0;
         cout << "Choose a flight to view (Type \"0\" to cancel): ";
         cin >> decision;
-        if(decision > 0) { //if user does not cancel, then flight is displayed
-            decision--;
-            cout << "Contact all passenger to notify them of this cancellation:" << endl;
-            flights[decision]->displayPassengerList();
-            //Re-defines and re-initializes flights array
-            flightNumber--;
-            Flight ** tempArray = flights;
-            flights = new Flight*[flightNumber];
-            for(int i = 0; i < flightNumber; i++) {
-                if(i < decision) {
-                    flights[i] = tempArray[i];
-                } else {
-                    flights[i] = tempArray[i+1];
+        decision--;
+        if(decision > -1) { //if user does not cancel, then flight is displayed
+            cout << "Are you sure (Type \"y\" or \"n\"): ";
+            cin.ignore();
+            getline(cin, confirmation);
+            if(confirmation == "y"){
+                cout << "Contact all passenger to notify them of this cancellation:" << endl;
+                flights[decision]->displayPassengerList();
+                //Re-defines and re-initializes flights array
+                flightNumber--;
+                Flight ** tempArray = flights;
+                flights = new Flight*[flightNumber];
+                for(int i = 0; i < flightNumber; i++) {
+                    if(i < decision) {
+                        flights[i] = tempArray[i];
+                    } else {
+                        flights[i] = tempArray[i+1];
+                    }
                 }
             }
-        } else {
-            cout << endl;
-            cout << "Process canceled." << endl;
-            cout << endl;
         }
     }
+
+    if(decision == 0 || confirmation == "n") { //if user canceled process
+        cout << endl;
+        cout << "Process canceled." << endl;
+        cout << endl;
+    }
+}
+
+string Airline::toString() {
+    cout << endl;
+    cout << "All scheduled flights:" << endl;
+    for(int i = 0; i < flightNumber; i++) {
+        flights[i]->toString();
+        cout << endl;
+    }
+    cout << endl;
+    return "";
 }
