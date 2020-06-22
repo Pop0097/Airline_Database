@@ -29,9 +29,17 @@ int Seat::getConfirmationNum() {
 }
 
 void Seat::setBooking(string n, string b, string e, string p, string a, int fNum) {
-    confirmationNum = rand()%1000000+1000000;
+    cout << "Here" << endl;
+    srand (time(0));
+    confirmationNum = rand()%10+1;
+    cout << confirmationNum << endl;
     person = new Customer(n, b, e, p, a, seatNumber, confirmationNum, fNum);
     reserved = true;
+}
+
+string Seat::displayTicketSummary() {
+    cout << "Name: " << person->getName() << "; Email: " << person->getEmail() << "; Phone: " << person->getPhoneNumber();
+    return "";
 }
 
 string Seat::toString() {

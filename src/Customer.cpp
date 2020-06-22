@@ -16,6 +16,7 @@ Customer::Customer() { // Sets default values for Customer object
 }
 
 Customer::Customer(string n, string b, string e, string p, string a, int s, int confirmation, int fNum) {
+    cout << "Here2" << endl;
     name = n;
     birthDate = b;
     email = e;
@@ -24,11 +25,18 @@ Customer::Customer(string n, string b, string e, string p, string a, int s, int 
     seatNumber = s;
     flightNumber = fNum;
     confirmationNumber = confirmation;
-    cout << confirmationNumber << endl;
 }
 
 string Customer::getName() {
     return name;
+}
+
+string Customer::getEmail() {
+    return email;
+}
+
+string Customer::getPhoneNumber() {
+    return phoneNumber;
 }
 
 string Customer::toString() {

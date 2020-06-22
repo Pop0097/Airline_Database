@@ -18,7 +18,7 @@ Flight::Flight() {
     seatsSold = 0;
     seats = new Seat*[totalSeats];
     for(int i = 0; i < 10; i++) {
-        seats[i] = new Seat(flightId, i);
+        seats[i] = new Seat(flightId, (i+1));
     }
     rows = 4;
     columns = 3;
@@ -59,6 +59,7 @@ Flight::Flight(int num, int duration, int seatsNum, string depDate, string depTi
     int remaining = totalSeats%columns;
     rows = floor(totalSeats/columns);
     rows += remaining;
+    cout << "Columns: " << columns << "; Rows: " << rows << endl;
 }
 
 Flight::~Flight(){}
@@ -108,26 +109,39 @@ void Flight::setTotalSeats(int seatsNum) {
         seatsNum = 700;
     }
     //Updates rows and columns according to the number of seats in the plane
-    if(totalSeats <= 40){
+    if(seatsNum <= 40){
         columns = 3;
-    } else if(totalSeats > 40 && totalSeats <= 100) {
+    } else if(seatsNum > 40 && seatsNum <= 100) {
         columns = 4;
-    } else if (totalSeats > 100 && totalSeats <= 250) {
+    } else if (seatsNum > 100 && seatsNum <= 250) {
         columns = 6;
-    } else if (totalSeats > 250 && totalSeats <= 350) {
+    } else if (seatsNum > 250 && seatsNum <= 350) {
         columns = 9;
     } else {
         columns = 10;
     }
-    int remaining = totalSeats%columns;
-    rows = floor(totalSeats/columns);
+    int remaining = seatsNum%columns;
+    rows = floor(seatsNum/columns);
     rows += remaining;
+    cout << "Columns: " << columns << "; Rows: " << rows << endl;
     //adjusts passenger seats to smaller planes by changing rows and columns
-    if(seatsNum < totalSeats) {
-        this->adjustPassengerSeats();
-    }
     //sets value
-    totalSeats = seatsNum;
+    int tempLength = seatsNum; //stores input
+    seatsNum = totalSeats; //stores original total seat value
+    totalSeats = tempLength;
+    Seat ** tempArray = seats;
+    seats = new Seat * [totalSeats];
+    if(tempLength < seatsNum) {
+        this->adjustPassengerSeats();
+    } else {
+        for(int i = 0; i < totalSeats; i++) {
+            if(i < seatsNum) {
+                seats[i] = tempArray[i];
+            } else {
+                seats[i] = new Seat(flightId, (i+1));
+            }
+        }
+    }
 }
 
 void Flight::adjustPassengerSeats() {
@@ -163,6 +177,7 @@ void Flight::setArrivalTime(string time) {
 }
 
 void Flight::setTicketReservation(string n, string b, string e, string p, string a, int s){
+    cout << "Here0 " << endl;
     seats[s]->setBooking(n, b, e, p, a, this->getFlightNumber());
 }
 
@@ -170,13 +185,10 @@ string Flight::displayPassengerList() {
     cout << "All passengers on flight " << flightId << ":" << endl;
     int counter = 0;
     for(int i = 0; i < totalSeats; i++ && counter <= seatsSold) {
-
-
-
-        /* Write code later */
-
-
-
+        if(seats[i]->getReservationStatus()) {
+            counter++;
+            cout << counter << ": " << seats[i]->displayTicketSummary() << endl;
+        }
     }
     if(counter == 0) {
         cout << endl;
@@ -205,9 +217,9 @@ void Flight::displaySeatingChart() {
 }
 
 void Flight::displayTicket(int confirmation) {
+    cout << endl;
     for(int i = 0; i < totalSeats; i++) {
         if(confirmation == seats[i]->getConfirmationNum()) {
-            cout << "Found!" << endl;
             seats[i]->toString();
         }
     }

@@ -578,6 +578,7 @@ void Airline::viewTicket() {
         cout << "Choose a flight to view (Type \"0\" to cancel): ";
         cin >> decision;
         if(decision > 0) { //if user does not cancel, then flight is edited
+            decision--;
             int confirmationNum = 0;
             cout << "Enter ticket confirmation number: ";
             cin >> confirmationNum;

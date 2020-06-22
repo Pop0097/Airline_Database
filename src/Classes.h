@@ -6,6 +6,7 @@
 #include <string.h>
 #include <array>
 #include <math.h>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -30,6 +31,8 @@ public:
     Customer(string, string, string, string, string, int, int, int);
     // Getters and Setters
     string getName();
+    string getEmail();
+    string getPhoneNumber();
     // Display
     string toString();
 
@@ -57,6 +60,7 @@ public:
     int getConfirmationNum();
     void setBooking(string, string, string, string, string, int);
     // Display
+    string displayTicketSummary();
     string toString();
 };
 
