@@ -112,10 +112,11 @@ public:
     void setArrivalDate(string);
     void setArrivalTime(string);
     void setTicketReservation(string, string, string, string, string, int);
+    // Methods for Seats
+    void findTicket(int, int);
     // Display
     string displayPassengerList();
     void displaySeatingChart();
-    void displayTicket(int);
     string toString();
 };
 
@@ -163,6 +164,8 @@ private:
     int employeeNumber;
     int flightNumber;
     string airlineName;
+    string airlineEmail;
+    string airlinePhone;
 public:
     // Constructors and Destructors
     Airline();
@@ -170,7 +173,11 @@ public:
     int employeeLogin(string, string);
     // Getters and Setters
     string getAirlineName();
+    string getAirlineEmail();
+    string getAirlinePhone();
     void setAirlineName(string);
+    void setAirlineEmail(string);
+    void setAirlinePhone(string);
     // Methods for Employee account
     void viewEmployeeAccount(int);
     void editEmployeeAccount(int);
@@ -187,6 +194,8 @@ public:
     bool searchFlightByDateAndCity();
     void bookTicket();
     void viewTicket();
+    void editTicket();
+    void deleteTicket();
     // Display
     string toString();
 };

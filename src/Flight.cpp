@@ -181,6 +181,33 @@ void Flight::setTicketReservation(string n, string b, string e, string p, string
     seats[s]->setBooking(n, b, e, p, a, this->getFlightNumber());
 }
 
+void Flight::findTicket(int confirmation, int operation) { //operation = 1 means view ticket. operation = 2 means cancel ticket
+    cout << endl;
+    for(int i = 0; i < totalSeats; i++) {
+        if(confirmation == seats[i]->getConfirmationNum()) {
+            if(operation == 1) {
+                seats[i]->toString();
+                cout << endl;
+                cout << "Flight Information:" << endl;
+                this->toString();
+            } else if(operation == 2) {
+                //gets confirmation from user
+                string confirmation = "";
+                cout << "Are you sure? (Enter \"y\" or \"n\"): ";
+                cin.ignore();
+                getline(cin, confirmation);
+                if(confirmation == "y") { //if user confirms
+                    seats[i] = new Seat(flightId, (i+1)); //resets Seat object
+                } else {
+                    cout << endl;
+                    cout << "Process canceled." << endl;
+                    cout << endl;
+                }
+            }
+        }
+    }
+}
+
 string Flight::displayPassengerList() {
     cout << "All passengers on flight " << flightId << ":" << endl;
     int counter = 0;
@@ -216,15 +243,6 @@ void Flight::displaySeatingChart() {
     cout << endl;
 }
 
-void Flight::displayTicket(int confirmation) {
-    cout << endl;
-    for(int i = 0; i < totalSeats; i++) {
-        if(confirmation == seats[i]->getConfirmationNum()) {
-            seats[i]->toString();
-        }
-    }
-}
-
 string Flight::toString() {
     cout << "Flight " << flightId << ":" << endl;
     cout << "Airplane model: " << airplaneType << endl;
@@ -232,6 +250,5 @@ string Flight::toString() {
     cout << "Departure information: " << departureLocation << "; " << departureDate << " at " << departureTime << endl;
     cout << "Arrival information: " << arrivalLocation << "; " << arrivalDate << " at " << arrivalTime << endl;
     cout << "Flight duration: " << durationMinutes << endl;
-    cout << "Percent of seats purchased: " << (round(seatsSold / totalSeats * 1000) / 10) << endl;
     return "";
 }

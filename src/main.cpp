@@ -9,7 +9,18 @@ int main() {
 
     bool done = false, signedIn;
     int userType, userNumber = 0;
-    string uname = "", pass = "";
+    string uname = "", pass = "", airlineEmail = "", airlinePhone = "", airlineName = "";
+
+    //gets inputs to set airline information
+    cout << "Set your airline name: ";
+    getline(cin, airlineName);
+    air.setAirlineName(airlineName);
+    cout << "Set your airline email: ";
+    getline(cin, airlineEmail);
+    air.setAirlineEmail(airlineEmail);
+    cout << "Set your airline phone number: ";
+    getline(cin, airlinePhone);
+    air.setAirlinePhone(airlinePhone);
 
     while(!done) { //Program loop starts
         cout << endl; cout << endl; cout << endl;
@@ -64,7 +75,8 @@ void customerSession(Airline& air) {
         cout << "1. Book a ticket (Type \"1\")" << endl;
         cout << "2. Cancel your ticket (Type \"2\")" << endl;
         cout << "3. View your ticket (Type \"3\")" << endl;
-        cout << "4. Contact an employee (Type \"4\")" << endl;
+        cout << "4. Edit your ticket (Type \"4\")" << endl;
+        cout << "5. Contact an employee (Type \"5\")" << endl;
         cout << endl;
         cout << "End session (Type \"100\")" << endl;
         cin >> choice;
@@ -72,13 +84,23 @@ void customerSession(Airline& air) {
         cout << endl;
 
         if(choice == 1) { //book ticket
-
+            air.bookTicket();
         } else if(choice == 2) { //cancel ticket
-
+            air.deleteTicket();
         } else if(choice == 3) { //view ticket
-
-        } else if(choice == 4) { //contact employee
-
+            air.viewTicket();
+        } else if(choice == 4) { //edit ticket (we only want employees to edit ticket information to make the database more realistic)
+            cout << "Contact one of our employees to edit your ticket information" << endl;
+            cout << endl;
+            cout << "You can contact " << air.getAirlineName() << " employees using the following methods:" << endl;
+            cout << "Email: " << air.getAirlineEmail() << endl;
+            cout << "Phone: " << air.getAirlinePhone() << endl;
+            cout << "Hours of operation: 900 to 1800" << endl;
+        } else if(choice == 5) { //contact employee
+            cout << "You can contact " << air.getAirlineName() << " employees using the following methods:" << endl;
+            cout << "Email: " << air.getAirlineEmail() << endl;
+            cout << "Phone: " << air.getAirlinePhone() << endl;
+            cout << "Hours of operation: 900 to 1800" << endl;
         } else { //logout
             done = true;
         }
@@ -120,9 +142,9 @@ void employeeSession(Airline& air, int userNumber) {
         if(choice == 1) { //book ticket
             air.bookTicket();
         } else if(choice == 2) { //cancel ticket
-
+            air.deleteTicket();
         } else if(choice == 3) { //edit ticket information
-
+            air.editTicket();
         } else if(choice == 4) { //view ticket
             air.viewTicket();
         } else if(choice == 5) { //schedule flight

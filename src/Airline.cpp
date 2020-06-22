@@ -12,6 +12,8 @@ Airline::Airline() {
     flights = new Flight * [flightNumber];
     flights[0] = new Flight();
     airlineName = "Air Pop0097";
+    airlineEmail = "airpop0097@gmail.com";
+    airlinePhone = "866 101 0097";
 }
 
 int Airline::employeeLogin(string uname, string pass) {
@@ -47,6 +49,26 @@ int Airline::employeeLogin(string uname, string pass) {
 
 string Airline::getAirlineName() {
     return airlineName;
+}
+
+string Airline::getAirlineEmail() {
+    return airlineEmail;
+}
+
+string Airline::getAirlinePhone() {
+    return airlinePhone;
+}
+
+void Airline::setAirlineName(string n) {
+    airlineName = n;
+}
+
+void Airline::setAirlineEmail(string e) {
+    airlineEmail = e;
+}
+
+void Airline::setAirlinePhone(string p) {
+    airlinePhone = p;
 }
 
 void Airline::viewEmployeeAccount(int userNumber) {
@@ -226,13 +248,13 @@ void Airline::createFlight() {
     getline(cin, departureLocation);
     cout << "Departure date (Format: DD/MM/YYYY): ";
     getline(cin, departureDate);
-    cout << "Departure time (Format: \"24 hour time (Time zone)\"): ";
+    cout << "Departure time (Format: \"Military time (Time zone)\"): ";
     getline(cin, departureTime);
     cout << "Arrival location (Format: \"City name, Country (airport code)\"): ";
     getline(cin, arrivalLocation);
     cout << "Arrival date (Format: DD/MM/YYYY): ";
     getline(cin, arrivalDate);
-    cout << "Arrival time (Format: \"24 hour time (Time zone)\"): ";
+    cout << "Arrival time (Format: \"Military time (Time zone)\"): ";
     getline(cin, arrivalTime);
     cout << "Flight duration (minutes): ";
     cin >> durationMinutes;
@@ -360,13 +382,13 @@ void Airline::editFlight() {
             getline(cin, departureLocation);
             cout << "Departure date (Format: DD/MM/YYYY): ";
             getline(cin, departureDate);
-            cout << "Departure time (Format: \"24 hour time (Time zone)\"): ";
+            cout << "Departure time (Format: \"Military time (Time zone)\"): ";
             getline(cin, departureTime);
             cout << "Arrival location (Format: \"City name, Country (airport code)\"): ";
             getline(cin, arrivalLocation);
             cout << "Arrival date (Format: DD/MM/YYYY): ";
             getline(cin, arrivalDate);
-            cout << "Arrival time (Format: \"24 hour time (Time zone)\"): ";
+            cout << "Arrival time (Format: \"Military time (Time zone)\"): ";
             getline(cin, arrivalTime);
             cout << "Flight duration (minutes): ";
             cin >> durationMinutes;
@@ -582,7 +604,30 @@ void Airline::viewTicket() {
             int confirmationNum = 0;
             cout << "Enter ticket confirmation number: ";
             cin >> confirmationNum;
-            flights[decision]->displayTicket(confirmationNum);
+            flights[decision]->findTicket(confirmationNum, 1);
+        } else {
+            cout << endl;
+            cout << "Process canceled." << endl;
+            cout << endl;
+        }
+    }
+}
+
+void Airline::editTicket() {}
+
+void Airline::deleteTicket() {
+    bool search = this->findFlights();
+
+    if(!search) {
+        int decision = 0;
+        cout << "Choose a flight to view (Type \"0\" to cancel): ";
+        cin >> decision;
+        if(decision > 0) { //if user does not cancel, then flight is edited
+            decision--;
+            int confirmationNum = 0;
+            cout << "Enter ticket confirmation number: ";
+            cin >> confirmationNum;
+            flights[decision]->findTicket(confirmationNum, 2);
         } else {
             cout << endl;
             cout << "Process canceled." << endl;
@@ -595,8 +640,8 @@ string Airline::toString() {
     cout << endl;
     cout << "All scheduled flights:" << endl;
     for(int i = 0; i < flightNumber; i++) {
+        cout << "----------------------------" << endl;
         flights[i]->toString();
-        cout << endl;
     }
     cout << endl;
     return "";
