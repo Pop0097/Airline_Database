@@ -110,7 +110,7 @@ public:
     void setFlightNumber(int);
     void setFlightDuration(int);
     void setTotalSeats(int);
-    void adjustPassengerSeats();
+    void adjustPassengerSeats(int);
     void setAirplaneType(string);
     void setDepartureLocation(string);
     void setDepartureDate(string);

@@ -17,7 +17,7 @@ Flight::Flight() {
     totalSeats = 76;
     seatsSold = 0;
     seats = new Seat*[totalSeats];
-    for(int i = 0; i < 10; i++) {
+    for(int i = 0; i < totalSeats; i++) {
         seats[i] = new Seat(flightId, (i+1));
     }
     rows = 19;
@@ -124,16 +124,17 @@ void Flight::setTotalSeats(int seatsNum) {
     rows = floor(seatsNum/columns);
     rows += remaining;
     cout << "Columns: " << columns << "; Rows: " << rows << endl;
-    //adjusts passenger seats to smaller planes by changing rows and columns
+
     //sets value
     int tempLength = seatsNum; //stores input
     seatsNum = totalSeats; //stores original total seat value
-    totalSeats = tempLength;
-    Seat ** tempArray = seats;
-    seats = new Seat * [totalSeats];
-    if(tempLength < seatsNum) {
-        this->adjustPassengerSeats();
-    } else {
+    totalSeats = tempLength; //sets totalSeat value in flight object to the input value
+
+    if(tempLength < seatsNum) { //if there are less seats in the new plane than before, then the seats will be modified
+        this->adjustPassengerSeats(seatsNum); //passes the original number of seats that were present
+    } else { //if there are more seats in the new plane than before, all passengers retain their current seats
+        Seat ** tempArray = seats;
+        seats = new Seat * [totalSeats];
         for(int i = 0; i < totalSeats; i++) {
             if(i < seatsNum) {
                 seats[i] = tempArray[i];
@@ -144,21 +145,40 @@ void Flight::setTotalSeats(int seatsNum) {
     }
 }
 
-void Flight::adjustPassengerSeats() {
+void Flight::adjustPassengerSeats(int originalSeatNum) {
     /*
-     *
-     *
-     *
-     *
-     *
-     * Do later
-     *
-     *
-     *
-     *
-     *
-     *
+     * Idea for this part:
+     * If the user's ticket number still exists, they will retain their current seat. If not, then they will be placed in reverse order starting from the back of the plane.
      */
+
+    Seat ** tempArray = seats;
+    seats = new Seat * [totalSeats];
+    for(int i = 0; i < totalSeats; i++) { //reinitializes seats array
+        seats[i] = tempArray[i];
+    }
+
+    bool seatFound = false;
+    int j = totalSeats-1, counter = 1;
+    cout << endl;
+    cout << "Notify these passengers that their seat has changed: " << endl;
+    for(int i = (originalSeatNum-1); i >= totalSeats; i--) { //goes through all seats that will not be present on the smaller plane in reverse order
+        seatFound = false;
+        if(tempArray[i]->getReservationStatus()) { //if a seat is reserved
+            while(!seatFound) { //Finding new seat loop starts
+                if(!seats[j]->getReservationStatus()) { //If the seat is not reserved
+                    seats[j] = tempArray[i]; //passenger placed at seat
+                    seats[j]->setSeatNumber(j+1);
+                    //Tells employee to update these passengers
+                    cout << counter << ". ";
+                    seats[j]->displayTicketSummary();
+                    cout << endl;
+                    seatFound = true;
+                    counter++;
+                }
+                j--;
+            } //Finding new seat loop ends
+        }
+    }
 }
 
 void Flight::setAirplaneType(string airplane) {
@@ -286,9 +306,21 @@ void Flight::displaySeatingChart() {
     cout << "Front of the plane" << endl;
     for(int i = 0; i < totalSeats; i++) {
         if(seats[i]->getReservationStatus()) {
-            cout << "X ";
+            if(counter < 10) {
+                cout << "X   ";
+            } else if(counter >= 10 && counter < 100) {
+                cout << "X  ";
+            } else {
+                cout << "X ";
+            }
         } else {
-            cout << counter << " ";
+            if(counter < 10) {
+                cout << counter << "   ";
+            } else if(counter >= 10 && counter < 100) {
+                cout << counter << "  ";
+            } else {
+                cout << counter << " ";
+            }
         }
         if((i+1)%columns == 0) {
             cout << endl;

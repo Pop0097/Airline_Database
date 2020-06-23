@@ -366,7 +366,7 @@ void Airline::editFlight() {
             while(!valid) {
                 cout << "Flight Number (Number between 10000 and 99999 inclusive): ";
                 cin >> flightNum;
-                if(flightNum >= 10000 && flightNum <= 99999) {
+                if((flightNum >= 10000 && flightNum <= 99999) || flightNum == 0) {
                     valid = true;
                 } else {
                     cout << "Invalid input." << endl;
