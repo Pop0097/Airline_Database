@@ -37,15 +37,23 @@ int main() {
             } else if(userType == 2) { //If emloyee, they must sign in first
                 cin.ignore();
                 while(!signedIn) { //Credential loop starts
-                    cout << "Enter Username: ";
+                    cout << "Enter Username (Type \"0\" to cancel): ";
                     getline(cin, uname);
-                    cout << "Enter Password: ";
-                    getline(cin, pass);
-                    userNumber = air.employeeLogin(uname, pass); //checks if credentials are correct
-                    if(userNumber >= 0) { //if credentials are correct, user is signed in
+                    if(uname == "0") { //if user cancels the loop is terminated
                         signedIn = true;
+                        cout << endl;
+                    } else {
+                        cout << "Enter Password: ";
+                        getline(cin, pass);
+                        userNumber = air.employeeLogin(uname, pass); //checks if credentials are correct
+                        if(userNumber >= 0) { //if credentials are correct, user is signed in
+                            signedIn = true;
+                        }
                     }
                 } //Credential loop ends
+                if(uname == "0") { //to prevent exiting from signin loop, if the user cancled the credential loop, then the value is changed
+                    signedIn = false;
+                }
             } else if(userType == 0) { //User cancels
                 signedIn = true;
                 done = true;

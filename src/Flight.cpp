@@ -5,23 +5,23 @@
 #import "Classes.h"
 
 Flight::Flight() {
-    flightId = 1;
-    departureDate = "Default Departure Date";
-    arrivalDate = "Default Arrival Date";
-    departureTime = "Default Departure Time";
-    arrivalTime = "Default Arrival Time";
-    departureLocation = "Default Departure Time";
-    arrivalLocation = "Default Arrival Time";
-    airplaneType = "Default Airplane Type";
-    durationMinutes = 0;
-    totalSeats = 10;
+    flightId = 12345;
+    departureDate = "01/01/2021";
+    arrivalDate = "01/01/2021";
+    departureTime = "0000 ET";
+    arrivalTime = "0100 ET";
+    departureLocation = "Ottawa, Canada (YOW)";
+    arrivalLocation = "Toronto, Canada (YYZ)";
+    airplaneType = "Bombardier Q400";
+    durationMinutes = 60;
+    totalSeats = 76;
     seatsSold = 0;
     seats = new Seat*[totalSeats];
     for(int i = 0; i < 10; i++) {
         seats[i] = new Seat(flightId, (i+1));
     }
-    rows = 4;
-    columns = 3;
+    rows = 19;
+    columns = 4;
 }
 
 Flight::Flight(int num, int duration, int seatsNum, string depDate, string depTime, string depLoc, string arrDate, string arrTime, string arrLocation, string planeType) {
@@ -145,7 +145,20 @@ void Flight::setTotalSeats(int seatsNum) {
 }
 
 void Flight::adjustPassengerSeats() {
-    /* Do later */
+    /*
+     *
+     *
+     *
+     *
+     *
+     * Do later
+     *
+     *
+     *
+     *
+     *
+     *
+     */
 }
 
 void Flight::setAirplaneType(string airplane) {
@@ -177,14 +190,15 @@ void Flight::setArrivalTime(string time) {
 }
 
 void Flight::setTicketReservation(string n, string b, string e, string p, string a, int s){
-    cout << "Here0 " << endl;
     seats[s]->setBooking(n, b, e, p, a, this->getFlightNumber());
 }
 
 void Flight::findTicket(int confirmation, int operation) { //operation = 1 means view ticket. operation = 2 means cancel ticket
     cout << endl;
+    bool found = false;
     for(int i = 0; i < totalSeats; i++) {
         if(confirmation == seats[i]->getConfirmationNum()) {
+            found = true;
             if(operation == 1) {
                 seats[i]->toString();
                 cout << endl;
@@ -205,6 +219,47 @@ void Flight::findTicket(int confirmation, int operation) { //operation = 1 means
                 }
             }
         }
+    }
+
+    if(!found) { //if ticket is not found
+        cout << endl;
+        cout << "Ticket not found." << endl;
+        cout << endl;
+    }
+}
+
+void Flight::updateSeat(string email, string phone, string add, int confirmation, int seatNum) {
+    int originalSeatNum = -1;
+    for(int i = 0; i < totalSeats; i++) {
+        if (confirmation == seats[i]->getConfirmationNum()) {
+            originalSeatNum = i;
+        }
+    }
+
+    //updates the values only if the user did not enter the value to "skip" the field and if the confirmation number matches a ticket
+    if(email != "0" && originalSeatNum != -1) {
+        seats[originalSeatNum]->setCustomerEmail(email);
+    }
+    if(phone != "0" && originalSeatNum != -1) {
+        seats[originalSeatNum]->setCustomerPhone(phone);
+    }
+    if(add != "0" && originalSeatNum != -1) {
+        seats[originalSeatNum]->setCustomerAdd(add);
+    }
+    if(seatNum != -1 && originalSeatNum != -1) {
+        //switches seats
+        Seat * tempSeat = seats[seatNum];
+        seats[seatNum] = seats[originalSeatNum];
+        seats[originalSeatNum] = tempSeat;
+        //re-initializes the seat numbers
+        seats[seatNum]->setSeatNumber(seatNum+1);
+        seats[originalSeatNum]->setSeatNumber(originalSeatNum+1);
+    }
+
+    if(originalSeatNum == -1) { //if ticket is not found
+        cout << endl;
+        cout << "Ticket not found." << endl;
+        cout << endl;
     }
 }
 

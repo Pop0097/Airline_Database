@@ -19,3 +19,10 @@ I made this database to further solidify my skills in object oriented programmin
 **Note:** Default login credentials for employee accounts:
 - **Username:** d_uname
 - **Password:** pass
+
+**Note:** The default flight created when the program is created has the following information:
+- **Flight Number:** 12345
+- **Departure Date (DD/MM/YYYY):** 01/01/2021
+- **Departure Location:** Ottawa, Canada (YOW)
+- **Arrival Location:** Toronto, Canada (YYZ)
+This information is required if you want to modify this flight (book tickets, etc.).

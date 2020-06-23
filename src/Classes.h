@@ -33,6 +33,9 @@ public:
     string getName();
     string getEmail();
     string getPhoneNumber();
+    void setEmail(string);
+    void setPhone(string);
+    void setAdd(string);
     // Display
     string toString();
 
@@ -59,6 +62,10 @@ public:
     bool getReservationStatus();
     int getConfirmationNum();
     void setBooking(string, string, string, string, string, int);
+    void setCustomerEmail(string);
+    void setCustomerPhone(string);
+    void setCustomerAdd(string);
+    void setSeatNumber(int);
     // Display
     string displayTicketSummary();
     string toString();
@@ -114,6 +121,7 @@ public:
     void setTicketReservation(string, string, string, string, string, int);
     // Methods for Seats
     void findTicket(int, int);
+    void updateSeat(string, string, string, int, int);
     // Display
     string displayPassengerList();
     void displaySeatingChart();

@@ -88,7 +88,7 @@ void Airline::editEmployeeAccount(int userNumber) {
     cout << "Fill in the fields. (If you don't want to change a field, enter \"0\". To cancel the process, enter \"0\" into all fields)" << endl;
     cout << "Name: ";
     getline(cin, name);
-    cout << "Employee ID: " ;
+    cout << "Employee ID (An \"E\" followed by 9 digits): " ;
     getline(cin, employeeID);
     cout << "Username: ";
     getline(cin, uname);
@@ -126,7 +126,7 @@ void Airline::createEmployeeAccount() {
     cout << "Fill in the fields. (If you don't want to set a field, enter \"0\". To cancel the process, enter \"0\" into all fields)" << endl;
     cout << "Name: ";
     getline(cin, name);
-    cout << "Employee ID: " ;
+    cout << "Employee ID (An \"E\" followed by 9 digits): " ;
     getline(cin, employeeID);
     Employee * newEmployee = new Employee(name, employeeID); //creates new employee object
     cout << "The employee's temporary username is " << name << " and their temporary password is \"pass\"" << endl;
@@ -472,7 +472,7 @@ void Airline::deleteFlight() {
         }
     }
 
-    if(decision == 0 || confirmation == "n") { //if user canceled process
+    if(decision == -1 || confirmation == "n") { //if user canceled process
         cout << endl;
         cout << "Process canceled." << endl;
         cout << endl;
@@ -613,7 +613,50 @@ void Airline::viewTicket() {
     }
 }
 
-void Airline::editTicket() {}
+void Airline::editTicket() {
+    bool search = this->findFlights();
+
+    if(!search) {
+        int decision = 0;
+        cout << "Choose a flight to view (Type \"0\" to cancel): ";
+        cin >> decision;
+        if(decision > 0) { //if user does not cancel, then flight is edited
+            decision--;
+            cout << "You can only update your contact information or seat on the airplane." << endl;
+            cout << endl;
+            cin.ignore();
+            //gets inputs
+            cout << "Fill in all of the fields (Type \"0\" in a field to not change it. Type \"0\" into all fields to cancel):" << endl;
+            string email = "", phone = "", address = "";
+            int seat = 0;
+            cout << "Email: ";
+            getline(cin, email);
+            cout << "Phone Number: ";
+            getline(cin, phone);
+            cout << "Address: ";
+            getline(cin, address);
+            if(email == "0" && phone == "0" && address == "0") { //if user cancels process
+                cout << endl;
+                cout << "Process canceled." << endl;
+                cout << endl;
+            } else {
+                flights[decision]->displaySeatingChart();
+                cout << "Type in a number to select the seat (Type \"0\" to not change your seat): ";
+                cin >> seat;
+                seat--;
+                int confirmationNum = 0;
+                cout << "Enter ticket confirmation number: ";
+                cin >> confirmationNum;
+                flights[decision]->updateSeat(email, phone, address, confirmationNum, seat); //sends inputs to update seat information
+            }
+
+        } else {
+            cout << endl;
+            cout << "Process canceled." << endl;
+            cout << endl;
+        }
+    }
+}
 
 void Airline::deleteTicket() {
     bool search = this->findFlights();
