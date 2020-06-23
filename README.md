@@ -20,7 +20,7 @@ I made this database to further solidify my skills in object oriented programmin
 - **Username:** d_uname
 - **Password:** pass
 
-**Note:** The default flight created when the program is created has the following information:
+**Note:** The default flight that is created when the program is launched has the following information:
 - **Flight Number:** 12345
 - **Departure Date (DD/MM/YYYY):** 01/01/2021
 - **Departure Location:** Ottawa, Canada (YOW)
