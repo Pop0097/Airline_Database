@@ -20,9 +20,8 @@ I made this database to further solidify my skills in object oriented programmin
 - **Username:** d_uname
 - **Password:** pass
 
-**Note:** The default flight that is created when the program is launched has the following information:
+**Note:** The default flight that is created when the program is launched has the following information: (This information is required if you want to modify this flight (book tickets, etc.).)
 - **Flight Number:** 12345
 - **Departure Date (DD/MM/YYYY):** 01/01/2021
 - **Departure Location:** Ottawa, Canada (YOW)
 - **Arrival Location:** Toronto, Canada (YYZ)
-This information is required if you want to modify this flight (book tickets, etc.).
